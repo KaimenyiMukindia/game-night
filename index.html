@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Night Invitation</title>
+    <style>
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-image: url('bg.jpg');
+            background-size: contain;  
+            background-position: center;  
+            background-repeat: no-repeat;  
+        }
+        .container::before {
+            content: attr(data-message);
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 20%; 
+            width: auto;
+            word-wrap: break-word;
+        }
+        @media (max-width: 768px) {
+    .container::before {
+        max-width: 70%;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="container" data-message="Loading message...">
+    </div>
+
+    <script>
+        window.onload = function() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            let deviceMessage = "device";
+            let messagePrefix = "Vile umefungua hii invite kwa ";
+
+            const updateMessage = (device, isMobile) => {
+                const mobileMessage = `${messagePrefix}${device} yako, hivo hivo make sure on Friday, umeiweka kwa mfuko in time for Game Night!`;
+                const pcMessage = `${messagePrefix}${device} yako, hivo hivo make sure on Friday, umeizima in time for Game Night!`;
+
+                document.querySelector(".container").setAttribute("data-message", isMobile ? mobileMessage : pcMessage);
+            }
+
+            if (userAgent.indexOf('android') > -1) {
+                if (userAgent.indexOf('samsung') > -1) {
+                    deviceMessage = "Samsung phone";
+                } else if (userAgent.indexOf('google') > -1) {
+                    deviceMessage = "Google Pixel phone";
+                } else {
+                    deviceMessage = "Android phone";
+                }
+                updateMessage(deviceMessage, true); 
+            }
+            else if (userAgent.indexOf('iphone') > -1) {
+                deviceMessage = "iPhone";
+                updateMessage(deviceMessage, true); 
+            }
+            else if (userAgent.indexOf('windows nt') > -1) {
+                if (userAgent.indexOf('windows 11') > -1) {
+                    deviceMessage = "Windows 11 PC";
+                } else if (userAgent.indexOf('windows 10') > -1) {
+                    deviceMessage = "Windows 10 PC";
+                } else {
+                    deviceMessage = "Windows PC";
+                }
+                updateMessage(deviceMessage, false); 
+            }
+            else if (userAgent.indexOf('macintosh') > -1 || userAgent.indexOf('mac os x') > -1) {
+                deviceMessage = "Mac";
+                updateMessage(deviceMessage, false); 
+            }
+            else if (userAgent.indexOf('linux') > -1) {
+                deviceMessage = "Linux PC";
+                updateMessage(deviceMessage, false); 
+            }
+            else {
+                deviceMessage = "device";
+                updateMessage(deviceMessage, false); 
+            }
+        }
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault(); 
+        });
+    </script>
+
+</body>
+</html>
